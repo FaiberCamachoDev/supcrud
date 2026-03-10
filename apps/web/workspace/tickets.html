@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandeja de Tickets | SupCrud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 flex">
+    <!-- Sidebar (Mismo que dashboard) -->
+    <aside class="w-72 bg-slate-900 h-screen sticky top-0 text-slate-400 p-6 flex flex-col">
+        <div class="flex items-center gap-3 text-white mb-10">
+            <i class="fas fa-bolt text-indigo-500 text-2xl"></i>
+            <span class="text-xl font-bold tracking-tight">SupCrud</span>
+        </div>
+        <nav class="flex-grow space-y-2">
+            <a href="dashboard.html" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-slate-800 transition-colors">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="tickets.html" class="flex items-center gap-3 p-4 rounded-2xl bg-indigo-600 text-white font-bold">
+                <i class="fas fa-ticket-alt"></i> Tickets
+            </a>
+            <a href="agents.html" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-slate-800 transition-colors">
+                <i class="fas fa-user-tie"></i> Agentes
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-grow p-10">
+        <!-- Filtros Superiores -->
+        <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm mb-10 flex flex-wrap gap-4 items-end">
+            <div class="flex-grow min-w-[200px]">
+                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Buscar por Código</label>
+                <div class="relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" placeholder="SC-..." class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                </div>
+            </div>
+            <div class="w-48">
+                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Estado</label>
+                <select class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                    <option value="">Todos</option>
+                    <option value="OPEN">Abiertos</option>
+                    <option value="IN_PROGRESS">En Progreso</option>
+                    <option value="RESOLVED">Resueltos</option>
+                </select>
+            </div>
+            <div class="w-48">
+                <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Prioridad</label>
+                <select class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                    <option value="">Todas</option>
+                    <option value="LOW">Baja</option>
+                    <option value="MEDIUM">Media</option>
+                    <option value="HIGH">Alta</option>
+                </select>
+            </div>
+            <button class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">
+                Filtrar
+            </button>
+        </div>
+
+        <!-- Listado de Tickets -->
+        <div class="space-y-4" id="ticketsContainer">
+            <!-- Ticket Card (Interactiva) -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer group flex items-center justify-between" onclick="location.href='ticket-detail.html'">
+                <div class="flex items-center gap-6">
+                    <div class="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-envelope-open-text text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="font-black text-slate-900">Reclamo por Garantía #SC-8291</h3>
+                            <span class="bg-rose-100 text-rose-700 text-[10px] font-black px-2 py-0.5 rounded-md uppercase">HIGH</span>
+                        </div>
+                        <p class="text-sm text-slate-500 font-medium">De: j.perez@email.com · Hace 15 minutos</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-8 text-right">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tipo</p>
+                        <span class="font-bold text-slate-700">Reclamo (R)</span>
+                    </div>
+                    <div class="w-32">
+                        <span class="inline-block w-full bg-emerald-100 text-emerald-700 py-1.5 rounded-lg text-xs font-black text-center">OPEN</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-slate-200 group-hover:text-indigo-600 transition-colors"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-10 flex justify-center gap-2">
+            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-400"><i class="fas fa-chevron-left"></i></button>
+            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-600 text-white font-bold">1</button>
+            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 font-bold">2</button>
+            <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-400"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/pages/ticketsPage.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Agentes | SupCrud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 flex min-h-screen">
+    <!-- Sidebar Reutilizado -->
+    <aside class="w-72 bg-slate-900 h-screen sticky top-0 text-slate-400 p-6 flex flex-col">
+        <div class="flex items-center gap-3 text-white mb-10">
+            <i class="fas fa-bolt text-indigo-500 text-2xl"></i>
+            <span class="text-xl font-bold tracking-tight">SupCrud</span>
+        </div>
+        <nav class="flex-grow space-y-2">
+            <a href="dashboard.html" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-slate-800 transition-colors">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="tickets.html" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-slate-800 transition-colors">
+                <i class="fas fa-ticket-alt"></i> Tickets
+            </a>
+            <a href="agents.html" class="flex items-center gap-3 p-4 rounded-2xl bg-indigo-600 text-white font-bold">
+                <i class="fas fa-user-tie"></i> Agentes
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-grow p-10">
+        <header class="flex justify-between items-end mb-10">
+            <div>
+                <h1 class="text-4xl font-black text-slate-900">Equipo de Agentes</h1>
+                <p class="text-slate-500 font-medium mt-2">Gestiona quién tiene acceso a este workspace y sus permisos.</p>
+            </div>
+            <button onclick="toggleModal('inviteModal')" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 flex items-center gap-2">
+                <i class="fas fa-user-plus"></i> Invitar Agente
+            </button>
+        </header>
+
+        <!-- Stats de Equipo -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-5">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase">Total Miembros</p>
+                    <p class="text-2xl font-black text-slate-900">12</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-5">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-circle-check"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase">En Línea</p>
+                    <p class="text-2xl font-black text-slate-900">4</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Agentes -->
+        <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-black tracking-widest border-b">
+                    <tr>
+                        <th class="px-8 py-5">Nombre / Email</th>
+                        <th class="px-8 py-5">Rol</th>
+                        <th class="px-8 py-5">Tickets Resueltos</th>
+                        <th class="px-8 py-5">Estado</th>
+                        <th class="px-8 py-5 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50" id="agentsList">
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center font-bold text-slate-600">AM</div>
+                                <div>
+                                    <p class="font-bold text-slate-900">Andrés Mendoza</p>
+                                    <p class="text-xs text-slate-400 italic">andres@empresa.com</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg text-xs font-bold">AGENTE</span>
+                        </td>
+                        <td class="px-8 py-6">
+                            <p class="font-black text-slate-700">142</p>
+                        </td>
+                        <td class="px-8 py-6">
+                            <span class="flex items-center gap-2 text-emerald-500 font-bold text-xs uppercase">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Online
+                            </span>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <button class="text-slate-300 hover:text-rose-500 transition-colors"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal Invitación -->
+    <div id="inviteModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center z-50">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl animate-fade-in">
+            <h2 class="text-2xl font-black text-slate-900 mb-2">Invitar nuevo miembro</h2>
+            <p class="text-slate-500 text-sm mb-8">Se enviará un correo con las credenciales de acceso.</p>
+            
+            <form class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Correo Electrónico</label>
+                    <input type="email" placeholder="ejemplo@correo.com" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/10">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">Asignar Rol</label>
+                    <select class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/10">
+                        <option value="AGENT">Agente (Operativo)</option>
+                        <option value="ADMIN">Administrador (Gestión)</option>
+                    </select>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="toggleModal('inviteModal')" class="flex-grow py-4 text-slate-500 font-bold hover:text-slate-800 transition-colors">Cancelar</button>
+                    <button type="submit" class="flex-grow bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all">Enviar Invitación</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Workspaces | Owner Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 flex min-h-screen">
+
+    <!-- Sidebar Reutilizado -->
+    <aside class="w-72 bg-slate-900 text-slate-400 p-6 flex flex-col fixed h-full z-10">
+        <div class="flex items-center gap-3 text-white mb-10 px-2">
+            <div class="bg-indigo-500 w-10 h-10 rounded-xl flex items-center justify-center">
+                <i class="fas fa-crown"></i>
+            </div>
+            <span class="text-xl font-bold tracking-tight">SupCrud <span class="text-xs block opacity-50 uppercase tracking-tighter">by Crudzaso</span></span>
+        </div>
+        <nav class="flex-grow space-y-2">
+            <a href="dashboard.html" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-slate-800 transition-colors">
+                <i class="fas fa-chart-line"></i> Métricas Globales
+            </a>
+            <a href="workspaces.html" class="flex items-center gap-3 p-4 rounded-2xl bg-indigo-600 text-white font-bold">
+                <i class="fas fa-building"></i> Workspaces
+            </a>
+            <a href="addons.html" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-slate-800 transition-colors">
+                <i class="fas fa-plus-circle"></i> Catálogo Add-ons
+            </a>
+        </nav>
+        <button onclick="auth.logout()" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-rose-900/20 hover:text-rose-400 transition-colors mt-auto">
+            <i class="fas fa-sign-out-alt"></i> Salir
+        </button>
+    </aside>
+
+    <main class="flex-grow ml-72 p-10">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-black text-slate-900">Gestión de Workspaces</h1>
+                <p class="text-slate-500 font-medium">Control total sobre los negocios registrados.</p>
+            </div>
+            <div class="flex gap-3">
+                <div class="bg-white border border-slate-200 rounded-2xl flex items-center px-4 py-2">
+                    <i class="fas fa-search text-slate-400 mr-2"></i>
+                    <input type="text" placeholder="Filtrar por nombre..." class="outline-none bg-transparent text-sm font-medium">
+                </div>
+                <button class="bg-slate-900 text-white px-6 py-2 rounded-2xl font-bold hover:bg-slate-800 transition-all text-sm">Exportar CSV</button>
+            </div>
+        </header>
+
+        <!-- Filtros Rápidos -->
+        <div class="flex gap-4 mb-8">
+            <button class="bg-indigo-100 text-indigo-700 px-5 py-2 rounded-full text-xs font-black uppercase">Todos (124)</button>
+            <button class="bg-white text-slate-500 px-5 py-2 rounded-full text-xs font-black uppercase border border-slate-100 hover:bg-slate-50">Activos (118)</button>
+            <button class="bg-white text-slate-500 px-5 py-2 rounded-full text-xs font-black uppercase border border-slate-100 hover:bg-slate-50">Suspendidos (6)</button>
+        </div>
+
+        <!-- Tabla Interactiva -->
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-black tracking-widest border-b border-slate-50">
+                    <tr>
+                        <th class="px-8 py-5">Nombre / ID</th>
+                        <th class="px-8 py-5">Tickets (Abiertos/Total)</th>
+                        <th class="px-8 py-5">Add-ons Activos</th>
+                        <th class="px-8 py-5">Estado</th>
+                        <th class="px-8 py-5 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50" id="ws-table-body">
+                    <!-- Fila Ejemplo 1 -->
+                    <tr class="hover:bg-slate-50/50 transition-all group">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                                    <i class="fas fa-shop text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="font-black text-slate-800">Tienda Tech S.A.</p>
+                                    <p class="text-xs text-slate-400 font-mono">ID: tt-8821-ws</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg font-black text-slate-800">12</span>
+                                <span class="text-slate-300">/</span>
+                                <span class="text-slate-500">154</span>
+                                <div class="w-20 bg-slate-100 h-1.5 rounded-full ml-4 overflow-hidden">
+                                    <div class="bg-emerald-500 h-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="bg-indigo-50 text-indigo-600 text-[10px] font-black px-2 py-0.5 rounded-md">IA_ASSIST</span>
+                                <span class="bg-emerald-50 text-emerald-600 text-[10px] font-black px-2 py-0.5 rounded-md">STORAGE</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">Active</span>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <button onclick="toggleWorkspace('tt-8821-ws', 'ACTIVE')" class="p-2 text-slate-400 hover:text-rose-500 transition-colors" title="Suspender Workspace">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                            <button class="p-2 text-slate-400 hover:text-indigo-600 transition-colors" title="Ver Métricas Detalladas">
+                                <i class="fas fa-chart-area"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Fila Ejemplo 2 (Suspendido) -->
+                    <tr class="opacity-60 bg-slate-50/20 grayscale transition-all">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-slate-200 rounded-2xl flex items-center justify-center text-slate-400">
+                                    <i class="fas fa-shop text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="font-black text-slate-800">Ropa Online Medellín</p>
+                                    <p class="text-xs text-slate-400 font-mono">ID: rom-ws-991</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">---</td>
+                        <td class="px-8 py-6">---</td>
+                        <td class="px-8 py-6">
+                            <span class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">Suspended</span>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <button onclick="toggleWorkspace('rom-ws-991', 'SUSPENDED')" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition-all">
+                                Reactivar
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/modules/auth.js"></script>
+    <script src="../js/modules/workspaces.js"></script>
+    <script>
+        async function toggleWorkspace(id, currentStatus) {
+            const nextStatus = currentStatus === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
+            const confirmMsg = `¿Estás seguro de que deseas ${nextStatus === 'ACTIVE' ? 'REACTIVAR' : 'SUSPENDER'} este workspace?`;
+            
+            // Reemplazo de confirm por lógica de UI si se desea, por ahora simple:
+            if(confirm(confirmMsg)) {
+                try {
+                    await workspaces.toggleStatus(id, nextStatus);
+                    location.reload();
+                } catch (err) { alert("Error al actualizar estado"); }
+            }
+        }
+
+        // Lógica de carga inicial
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Aquí se llamaría a workspaces.getAll() para poblar la tabla dinámicamente
+            console.log("Workspaces view loaded as Owner");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard | SupCrud by Crudzaso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-slate-900 text-slate-400 p-6 flex flex-col fixed h-full">
+        <div class="flex items-center gap-3 text-white mb-10 px-2">
+            <div class="bg-indigo-500 w-10 h-10 rounded-xl flex items-center justify-center">
+                <i class="fas fa-crown"></i>
+            </div>
+            <span class="text-xl font-bold tracking-tight">SupCrud <span class="text-xs block opacity-50 uppercase">Global Owner</span></span>
+        </div>
+        
+        <nav class="flex-grow space-y-2">
+            <a href="dashboard.html" class="flex items-center gap-3 p-4 rounded-2xl bg-indigo-600 text-white font-bold">
+                <i class="fas fa-chart-line"></i> Métricas Globales
+            </a>
+            <a href="workspaces.html" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-slate-800 transition-colors">
+                <i class="fas fa-building"></i> Workspaces
+            </a>
+            <a href="addons.html" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-slate-800 transition-colors">
+                <i class="fas fa-plus-circle"></i> Catálogo Add-ons
+            </a>
+        </nav>
+
+        <button onclick="auth.logout()" class="flex items-center gap-3 p-4 rounded-2xl hover:bg-rose-900/20 hover:text-rose-400 transition-colors mt-auto">
+            <i class="fas fa-sign-out-alt"></i> Salir del Sistema
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow ml-72 p-10">
+        <header class="mb-10 flex justify-between items-end">
+            <div>
+                <h1 class="text-4xl font-black text-slate-900">Métricas del Ecosistema</h1>
+                <p class="text-slate-500 font-medium mt-2">Bienvenido, Administrador de SupCrud</p>
+            </div>
+            <div class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full font-bold text-sm">
+                Plataforma: v2.5.0
+            </div>
+        </header>
+
+        <!-- Grid de métricas globales -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="bg-blue-50 text-blue-600 p-3 rounded-2xl"><i class="fas fa-briefcase text-xl"></i></div>
+                    <span class="text-emerald-500 font-bold">+5 esta semana</span>
+                </div>
+                <h3 class="text-slate-500 font-bold uppercase text-xs tracking-widest">Total Workspaces</h3>
+                <p class="text-5xl font-black text-slate-900 mt-2">124</p>
+            </div>
+            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="bg-purple-50 text-purple-600 p-3 rounded-2xl"><i class="fas fa-ticket text-xl"></i></div>
+                    <span class="text-indigo-500 font-bold">Promedio 3.2k/mes</span>
+                </div>
+                <h3 class="text-slate-500 font-bold uppercase text-xs tracking-widest">Tickets Procesados</h3>
+                <p class="text-5xl font-black text-slate-900 mt-2">12.5k</p>
+            </div>
+            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="bg-amber-50 text-amber-600 p-3 rounded-2xl"><i class="fas fa-gem text-xl"></i></div>
+                    <span class="text-amber-500 font-bold">45% conversión</span>
+                </div>
+                <h3 class="text-slate-500 font-bold uppercase text-xs tracking-widest">Add-ons Activos</h3>
+                <p class="text-5xl font-black text-slate-900 mt-2">342</p>
+            </div>
+        </div>
+
+        <!-- Tabla de Workspaces Recientes -->
+        <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+            <div class="p-8 border-b border-slate-50 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-slate-900">Workspaces bajo Supervisión</h2>
+                <button class="text-indigo-600 font-bold text-sm hover:underline">Ver Reporte Completo</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50/50 text-slate-400 text-xs uppercase font-bold">
+                        <tr>
+                            <th class="px-8 py-5">Nombre del Negocio</th>
+                            <th class="px-8 py-5 text-center">Tickets Abiertos</th>
+                            <th class="px-8 py-5">Add-ons</th>
+                            <th class="px-8 py-5">Estado</th>
+                            <th class="px-8 py-5 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50" id="workspacesList">
+                        <!-- Renderizado dinámico -->
+                        <tr class="hover:bg-slate-50/50 transition-colors">
+                            <td class="px-8 py-6 font-bold text-slate-800">E-Shop Pro</td>
+                            <td class="px-8 py-6 text-center font-medium">42</td>
+                            <td class="px-8 py-6">
+                                <div class="flex gap-2 text-xs">
+                                    <span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-lg">IA</span>
+                                    <span class="bg-emerald-50 text-emerald-600 px-2 py-1 rounded-lg">Files</span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-black">ACTIVE</span>
+                            </td>
+                            <td class="px-8 py-6 text-right">
+                                <button class="text-rose-500 font-bold text-sm hover:underline">Suspender</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/modules/auth.js"></script>
+</body>
+</html>
